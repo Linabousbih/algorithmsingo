@@ -41,4 +41,5 @@ func main() {
 	myLinkedList.Append(6)
 	myLinkedList.Append(1)
 	myLinkedList.Display()
+
 }
