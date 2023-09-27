@@ -16,12 +16,14 @@ func (q *Queue) Enqueue(val int){
 	q.Elements=append(q.Elements, val)
 }
 
-func (q* Queue) Dequeue(){
+func (q* Queue) Dequeue() int{
 	if len(q.Elements)==0{
 		fmt.Println("The queue is empty")
-		return
+		return 0
 	}
+	dequeued:=q.Elements[0]
 	q.Elements=q.Elements[1:]
+	return dequeued
 }
 
 func (q* Queue) show(){
@@ -38,8 +40,9 @@ func main(){
 	q.Enqueue(9)
 	q.Enqueue(2)
 	q.show()
-	q.Dequeue()
+	v:=q.Dequeue()
+	fmt.Println(v)
 	q.show()
-	q.Dequeue()
-	q.Dequeue()
+	_=q.Dequeue()
+	_=q.Dequeue()
 }
