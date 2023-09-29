@@ -1,2 +1,2 @@
 # algorithmsingo
-Implementing famous data structures in go
+Implementing famous Algorithms and Data Structures in go
