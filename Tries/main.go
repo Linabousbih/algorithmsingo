@@ -1,67 +1,65 @@
 package main
 
-import (
-	"fmt"
-)
+import "fmt"
 
-type Node struct {
-	Val      string
-	Children []*Node
+// import "fmt"
+
+type TrieNode struct {
+	Children map[rune]*TrieNode
+	isEnd bool
 }
 
-type Trie struct {
-	root *Node
+type Trie struct{
+	root *TrieNode
 }
 
-func (n *Node) DFS() {
-	n.dfs(0)
+func newTrie() Trie{
+	root:=TrieNode{Children:make(map[rune]*TrieNode)}
+
+	return Trie{root: &root}
 }
 
-func (n *Node) dfs(level int) {
-	indent := ""
-	for i := 0; i < level; i++ {
-		indent += "  "
-	}
-	fmt.Printf("%s%s\n", indent, n.Val)
-
-	for _, child := range n.Children {
-		child.dfs(level + 1)
-	}
-}
-
-func (trie *Trie) Insert(s string) {
-	parent := trie.root
-	for i := 0; i < len(s); i++ {
-		if index, ok := BFS(parent.Children, s[i]); ok {
-			fmt.Println("I exists")
-			parent = parent.Children[index]
-		} else {
-			fmt.Println("I don't exist")
-			newNode := &Node{Val: string(s[i])}
-			parent.Children = append(parent.Children, newNode)
-			parent = newNode
+func (t* Trie) Insert(word string){
+	current:=t.root
+	for _,char:=range word{
+		if current.Children[char]==nil{
+			current.Children[char]=&TrieNode{Children:make(map[rune]*TrieNode)}
 		}
+			current=current.Children[char]
 	}
-}
-
-func BFS(tree []*Node, c byte) (int, bool) {
-	for i := 0; i < len(tree); i++ {
-		if tree[i].Val == string(c) {
-			return i, true
+	current.isEnd=true
+	}
+func (t*Trie) Search(word string) bool{
+	current:=t.root
+	for _,char:=range word{
+		if current.Children[char]==nil{
+			return false
 		}
+			current=current.Children[char]
 	}
-	return -1, false
+	return current.isEnd
+	}
+
+func (t*TrieNode) Display(){
+	current:=t
+	if current.isEnd{
+		fmt.Println()
+		fmt.Print(" ")
+	}
+	for c,char:=range current.Children{
+		fmt.Print(string(c))
+		char.Display()
+	}
 }
 
-func main() {
-	t := &Trie{
-		root: &Node{},
-	}
-	fmt.Println(t.root.Val,t.root.Children)
+func main(){
+	t:=newTrie()
+	t.Insert("word")
+	t.Insert("wo")
+	fmt.Println(t.Search("wo"))
+	t.Insert("age")
+	t.Insert("agent")
 	t.Insert("and")
-	// t.Insert("ant")
-	// t.Insert("age")
-	// t.Insert("agent")
-	fmt.Println(t.root.Val,t.root.Children)
-	t.root.DFS()
+	t.Insert("ant")
+	t.root.Display()
 }
